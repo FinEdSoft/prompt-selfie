@@ -3,6 +3,7 @@ import { TRAIN_MODEL_CREDITS } from "@/constants";
 import { NextRequest, NextResponse } from "next/server";
 import { prismaClient } from "@/lib/prisma";
 import { FalAIModel } from "@/models/FalAIModel";
+import { currentUser } from "@clerk/nextjs/server";
 
 const falAiModel = new FalAIModel();
 
@@ -15,9 +16,8 @@ export async function POST(request: NextRequest) {
             requestId,
         });
 
-        // Get user ID from session or auth token
-        // You need to implement authentication middleware to get userId
-        const userId = ""; // Replace with actual user ID retrieval logic
+        const user  = await currentUser();
+        const userId = user?.id ?? "";
         
         // check if the user has enough credits
         const credits = await prismaClient.userCredit.findUnique({

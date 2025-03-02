@@ -1,4 +1,5 @@
 import { createStripeSession, PaymentService } from "@/lib/payment";
+import { currentUser } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -7,10 +8,10 @@ export async function POST(request: NextRequest) {
         const { plan, isAnnual, method } = body;
         
         // Get user from the request - implement this based on your auth setup
-        const requestHeaders = new Headers(request.headers);
             
-        const userId  = requestHeaders.get('x-user-id') ?? "";
-        const userEmail = requestHeaders.get('x-user-email') ?? "";
+        const user  = await currentUser();
+        const userId = user?.id ?? "";
+        const userEmail = user?.emailAddresses[0].emailAddress ?? "";
 
         console.log("Payment request received:", {
             userId,

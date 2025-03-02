@@ -2,14 +2,14 @@ import { NextResponse } from "next/server";
 import { GenerateImage } from "@/lib/types";
 import { prismaClient } from "@/lib/prisma";
 import { FalAIModel } from "@/models/FalAIModel";
+import { currentUser } from "@clerk/nextjs/server";
 
 const IMAGE_GEN_CREDITS = 1; // Define your credit cost for image generation
 
 export async function POST(req: Request) {
     try {
-        const requestHeaders = new Headers(req.headers);
-            
-        const userId  = requestHeaders.get('x-user-id') ?? "";
+        const user  = await currentUser();
+        const userId = user?.id ?? "";
 
         // Parse the request body
         const body = await req.json();

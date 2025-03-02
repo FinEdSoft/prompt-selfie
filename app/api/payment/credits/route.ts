@@ -1,10 +1,12 @@
 import { prismaClient } from '@/lib/prisma';
+import { currentUser } from '@clerk/nextjs/server';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
     try {
         // Authenticate the user
-        const userId = request.headers.get("x-user-id") || "";
+        const user = await currentUser();
+        const userId = user?.id;
         
         if (!userId) {
             return NextResponse.json({ message: "Unauthorized" }, { status: 401 });

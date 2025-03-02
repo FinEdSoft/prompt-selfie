@@ -2,10 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { IMAGE_GEN_CREDITS } from "@/constants";
 import { GenerateImagesFromPack } from "@/lib/types";
 import { prismaClient } from "@/lib/prisma";
+import { currentUser } from "@clerk/nextjs/server";
+
+import { FalAIModel } from "@/models/FalAIModel";
+
+const falAiModel = new FalAIModel();
 
 export async function POST(req: NextRequest) {
-    const requestHeaders = new Headers(req.headers);
-    const userId  = requestHeaders.get('x-user-id');
+    const user  = await currentUser();
+    const userId = user?.id ?? "";
     
     try {
         const body = await req.json();

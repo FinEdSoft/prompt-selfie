@@ -2,10 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { PlanType } from '@/types';
 import { PaymentService } from '@/lib/payment';
 import { prismaClient } from '@/lib/prisma';
+import { currentUser } from '@clerk/nextjs/server';
 
 export async function POST(request: NextRequest) {
     try {
-        const userId = request.headers.get('x-user-id') || "";
+        const user  = await currentUser();
+        const userId = user?.id ?? "";
         const body = await request.json();
         
         const {

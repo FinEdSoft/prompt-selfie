@@ -1,11 +1,11 @@
 import { prismaClient } from "@/lib/prisma";
+import { currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
     try {
-        const requestHeaders = new Headers(request.headers);
-            
-        const userId  = requestHeaders.get('x-user-id') ?? "";
+        const user  = await currentUser();
+        const userId = user?.id ?? "";
         
         // Parse the URL to get query parameters
         const { searchParams } = new URL(request.url);

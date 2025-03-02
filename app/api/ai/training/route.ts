@@ -1,6 +1,7 @@
 import { prismaClient } from "@/lib/prisma";
 import { TrainModel } from "@/lib/types";
 import { FalAIModel } from "@/models/FalAIModel";
+import { currentUser } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
 
@@ -8,9 +9,8 @@ const falAiModel = new FalAIModel();
 
 export async function POST(req: NextRequest) {
 
-    const requestHeaders = new Headers(req.headers);
-    
-    const userId = requestHeaders.get('x-user-id');
+    const user  = await currentUser();
+    const userId = user?.id ?? "";
     
     // Parse request body
     const body = await req.json();
