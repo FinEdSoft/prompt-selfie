@@ -3,12 +3,12 @@ import { prismaClient } from '@/lib/prisma'; // Adjust this import path as neede
 
 export async function GET(
     request: Request,
-    { params }: { params: { userId: string } }
+    { params }: { params: Promise<{ userId: string }> }
 ) {
     try {
         const userCredit = await prismaClient.userCredit.findUnique({
             where: {
-                userId: params.userId,
+                userId: (await params).userId,
             },
             select: {
                 amount: true,

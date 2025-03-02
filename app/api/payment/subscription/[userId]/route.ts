@@ -3,12 +3,12 @@ import { NextResponse } from "next/server";
 
 export async function GET(
     request: Request,
-    { params }: { params: { userId: string } }
+    { params }: { params: Promise<{ userId: string }> }
 ) {
     try {
         const subscription = await prismaClient.subscription.findFirst({
             where: {
-                userId: params.userId,
+                userId: (await params).userId,
             },
             orderBy: {
                 createdAt: "desc",
