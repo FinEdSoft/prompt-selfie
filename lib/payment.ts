@@ -1,7 +1,7 @@
 import Stripe from "stripe";
 import Razorpay from "razorpay";
 import crypto from "crypto";
-import { PlanType } from "@prisma/client";
+import { PlanType } from "@/types";
 import { prismaClient } from "./prisma";
 
 // Validate environment variables
