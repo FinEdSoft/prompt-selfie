@@ -1,7 +1,11 @@
 // @ts-nocheck
 import { PrismaClient } from '@prisma/client';
 
-const prismaClient: PrismaClient;
+declare global {
+    const prismaClient: PrismaClient | undefined
+}
+
+const prismaClient: PrismaClient = global.prismaClient || new PrismaClient();
 
 if (process.env.NODE_ENV === 'production') {
     prismaClient = new PrismaClient();
