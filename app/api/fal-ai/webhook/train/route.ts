@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
         }
 
         const { imageUrl } = await falAiModel.generateImageSync(
-            //@ts-ignore
+            //@ts-expect-error
             result.data.diffusers_lora_file.url
         );
 
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
             },
             data: {
                 trainingStatus: "Generated",
-                //@ts-ignore
+                //@ts-expect-error
                 tensorPath: result.data.diffusers_lora_file.url,
                 thumbnail: imageUrl,
             },

@@ -6,7 +6,7 @@ export async function GET() {
         const packs = await prismaClient.packs.findMany({});
         
         return NextResponse.json({ packs });
-    } catch (error) {
+    } catch {
         return NextResponse.json(
             { error: 'Failed to fetch packs' },
             { status: 500 }

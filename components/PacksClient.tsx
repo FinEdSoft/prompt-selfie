@@ -4,10 +4,8 @@ import { useState } from "react";
 import { SelectModel } from "./Models";
 import { PackCard, TPack } from "./PackCard";
 import { motion } from "framer-motion";
-import { Package, Search, Sparkles, Filter } from "lucide-react";
-import { Input } from "./ui/input";
+import { Package } from "lucide-react";
 import { Button } from "./ui/button";
-import { Badge } from "./ui/badge";
 import { cn } from "@/lib/utils";
 
 export function PacksClient({ packs }: { packs: TPack[] }) {
@@ -67,7 +65,7 @@ export function PacksClient({ packs }: { packs: TPack[] }) {
           }}
         >
           {filteredPacks.length > 0 ? (
-            filteredPacks.map((pack, index) => (
+            filteredPacks.map((pack) => (
               <motion.div
                 key={pack.id}
                 variants={{

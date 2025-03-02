@@ -20,7 +20,6 @@ import {
 import { Switch } from "@/components/ui/switch"
 import { UploadModal } from "@/components/ui/upload"
 import { useState } from "react"
-import { TrainModelInput } from "common/inferred"
 import axios from "axios"
 import { BACKEND_URL } from "../config"
 import { useRouter } from "next/navigation"
@@ -50,7 +49,7 @@ export default function Train() {
         };
 
         const token = await getToken()
-        const response = await axios.post(`${BACKEND_URL}/ai/training`, input, {
+        await axios.post(`${BACKEND_URL}/ai/training`, input, {
             headers: {
                 Authorization
                 
@@ -131,7 +130,7 @@ export default function Train() {
                     </div>
                     <div className="flex flex-col space-y-1.5">
                         <Label htmlFor="name">Bald</Label>
-                        <Switch onClick={(e) => {
+                        <Switch onClick={() => {
                             setBald(!bald)
                         }} />
                     </div>

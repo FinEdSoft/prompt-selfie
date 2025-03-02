@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     }
     
     // Train the model using falAi service
-    const { request_id, response_url } = await falAiModel.trainModel(
+    const { request_id } = await falAiModel.trainModel(
         parsedBody.data.zipUrl,
         parsedBody.data.name
     );

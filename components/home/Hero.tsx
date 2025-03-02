@@ -11,9 +11,7 @@ import { ArrowRight, CheckCircle, Clock, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { ScrollIndicator } from "./ScrollIndicator";
 import { StatsSection } from "./StatsSection";
-import { PricingSection } from "./PricingSection";
 import { HowItWorks } from "./HowItWorks";
-// import { TrustedBy } from "./TrustedBy";
 
 export function Hero() {
   return (

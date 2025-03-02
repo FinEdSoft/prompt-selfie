@@ -26,7 +26,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
-import { Brain, Upload } from "lucide-react";
+import { Brain } from "lucide-react";
 import { useCredits } from "@/hooks/use-credits";
 export function Train() {
   const { getToken } = useAuth();
@@ -65,6 +65,7 @@ export function Train() {
       toast.success(
         "Model training started! This will take approximately 20 minutes."
       );
+    // @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Failed to start model training");
     } finally {

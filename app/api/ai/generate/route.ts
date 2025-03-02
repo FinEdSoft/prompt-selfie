@@ -44,7 +44,7 @@ export async function POST(req: Request) {
             }, { status: 411 });
         }
 
-        const { request_id, response_url } = await new FalAIModel().generateImage(
+        const { request_id } = await new FalAIModel().generateImage(
             parsedBody.data.prompt,
             model.tensorPath
         );

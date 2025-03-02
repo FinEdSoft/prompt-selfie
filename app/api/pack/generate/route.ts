@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
             }, { status: 411 });
         }
     
-        let requestIds: { request_id: string }[] = await Promise.all(
+        const requestIds: { request_id: string }[] = await Promise.all(
             prompts.map((prompt) =>
                 falAiModel.generateImage(prompt.prompt, model.tensorPath!)
             )

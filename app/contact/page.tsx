@@ -47,7 +47,7 @@ export default function ContactPage() {
         try {
             // Simulate API call
             await new Promise(resolve => setTimeout(resolve, 1000));
-            // console.log("Form data:", data);
+            console.log("Form data:", data);
             
             setIsSubmitted(true);
             form.reset();
@@ -65,7 +65,7 @@ export default function ContactPage() {
                 
                 <p className="text-lg text-gray-600 mb-8 text-center">
                     Have questions about our AI portrait technology? Looking to create your own custom AI model?
-                    We're here to help you transform your photos into stunning AI-generated portraits.
+                    We&apos;re here to help you transform your photos into stunning AI-generated portraits.
                 </p>
                 
                 <div className="grid md:grid-cols-2 gap-12 mb-16">
@@ -95,7 +95,7 @@ export default function ContactPage() {
                             <div className="text-center py-8">
                                 <h3 className="text-2xl font-bold text-green-600 mb-2">Thank You!</h3>
                                 <p className="text-gray-600">
-                                    We've received your message and will get back to you as soon as possible.
+                                    We&apos;ve received your message and will get back to you as soon as possible.
                                 </p>
                                 <Button 
                                     className="mt-6"
@@ -110,7 +110,6 @@ export default function ContactPage() {
                                     <FormField
                                         control={form.control}
                                         name="name"
-                                        // @ts-ignore
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>Name</FormLabel>
@@ -125,7 +124,6 @@ export default function ContactPage() {
                                     <FormField
                                         control={form.control}
                                         name="email"
-                                        // @ts-ignore
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>Email</FormLabel>
@@ -140,7 +138,6 @@ export default function ContactPage() {
                                     <FormField
                                         control={form.control}
                                         name="subject"
-                                        // @ts-ignore
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>Subject</FormLabel>
@@ -155,7 +152,6 @@ export default function ContactPage() {
                                     <FormField
                                         control={form.control}
                                         name="message"
-                                        // @ts-ignore
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>Message</FormLabel>

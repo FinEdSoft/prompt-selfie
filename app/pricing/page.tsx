@@ -12,7 +12,7 @@ export default function SubscriptionPage() {
     isAnnual: boolean;
   } | null>(null);
 
-  const { handlePayment, stripeLoading, razorpayLoading } = usePayment();
+  const { handlePayment } = usePayment();
 
   const plans = [
     {

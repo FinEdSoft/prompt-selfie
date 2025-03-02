@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
             { status: 400 }
         );
     }
-
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let evt: any;
 
     try {
@@ -34,6 +34,7 @@ export async function POST(req: NextRequest) {
             "svix-timestamp": svix_timestamp,
             "svix-signature": svix_signature,
         });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
         console.log("Error: Could not verify webhook:", err.message);
         return NextResponse.json(

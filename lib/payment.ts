@@ -145,6 +145,7 @@ export async function createRazorpayOrder(
 
     // Use promisified version
     const order = await new Promise((resolve, reject) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       razorpay.orders.create(orderData, (err: any, result: any) => {
         if (err) {
           console.error("Order creation error:", err);
@@ -164,6 +165,7 @@ export async function createRazorpayOrder(
       currency: "INR",
       name: "PhotoAI",
       description: `${plan.toUpperCase()} Plan ${isAnnual ? "(Annual)" : "(Monthly)"}`,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       order_id: (order as any).id,
       prefill: {
         name: "",

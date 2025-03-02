@@ -15,7 +15,7 @@ export default function TermsOfService() {
                 <section>
                     <h2 className="text-xl font-semibold mb-3">1. Introduction</h2>
                     <p className="text-white">
-                        These Terms of Service ("Terms") govern your access to and use of our portrait AI generation 
+                        These Terms of Service (&quot;Terms&quot;) govern your access to and use of our portrait AI generation 
                         services, including our website, mobile application, and all related services (collectively, 
                         the "Service"). By using our Service, you agree to be bound by these Terms.
                     </p>
@@ -24,8 +24,8 @@ export default function TermsOfService() {
                 <section>
                     <h2 className="text-xl font-semibold mb-3">2. Definitions</h2>
                     <p className="text-white">
-                        "User Content" refers to images, photos, portraits, prompts, and other content you upload to our Service.<br />
-                        "Generated Content" refers to AI-generated images created by our Service based on your User Content and prompts.
+                        &quot;User Content&quot; refers to images, photos, portraits, prompts, and other content you upload to our Service.<br />
+                        &quot;Generated Content&quot; refers to AI-generated images created by our Service based on your User Content and prompts.
                     </p>
                 </section>
 
@@ -72,7 +72,7 @@ export default function TermsOfService() {
                 <section>
                     <h2 className="text-xl font-semibold mb-3">7. Service Limitations</h2>
                     <p className="text-white">
-                        <strong>7.1.</strong> Our Service is provided "as is" without warranties of any kind.<br />
+                        <strong>7.1.</strong> Our Service is provided &quot;as is&quot; without warranties of any kind.<br />
                         <strong>7.2.</strong> We reserve the right to limit or terminate access to our Service for violations of these Terms.<br />
                         <strong>7.3.</strong> We may experience downtime for maintenance or due to technical issues.
                     </p>

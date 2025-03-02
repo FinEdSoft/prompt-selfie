@@ -1,8 +1,8 @@
 import { prismaClient } from '@/lib/prisma';
 import { currentUser } from '@clerk/nextjs/server';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
     try {
         // Authenticate the user
         const user = await currentUser();

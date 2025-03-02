@@ -39,6 +39,7 @@ export function GenerateImage() {
             })
             toast.success("Image generation started!")
             setPrompt("")
+        // @typescript-eslint/no-unused-vars
         } catch (error) {
             toast.error("Failed to generate image")
         } finally {

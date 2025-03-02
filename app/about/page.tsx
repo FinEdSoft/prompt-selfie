@@ -48,8 +48,8 @@ export default function AboutPage() {
                         and styles - all with just a few portrait photos and a description.
                     </p>
                     <p className="text-lg text-gray-600">
-                        Whether you're curious how you'd look in historical attire, want to visualize yourself
-                        in exotic locations, or just want to experiment with styles you've never tried,
+                        Whether you&apos;re curious how you&apos;d look in historical attire, want to visualize yourself
+                        in exotic locations, or just want to experiment with styles you&apos;ve never tried,
                         our technology makes it possible.
                     </p>
                 </motion.div>
@@ -113,7 +113,7 @@ export default function AboutPage() {
             >
                 <h2 className="text-3xl font-semibold mb-8 text-center">Our Technology</h2>
                 <p className="text-lg text-gray-600 max-w-4xl mx-auto mb-8">
-                    We've built our platform on state-of-the-art generative AI models, specifically optimized for 
+                    We&apos;ve built our platform on state-of-the-art generative AI models, specifically optimized for 
                     portrait transformation while preserving your unique features. Our proprietary training methods 
                     ensure that the generated images maintain your likeness while seamlessly integrating with new 
                     clothing styles and environments.
