@@ -275,7 +275,8 @@ export async function createSubscriptionRecord(
 ) {
   try {
     return await withRetry(() =>
-      prismaClient.$transaction(async (prisma) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      prismaClient.$transaction(async (prisma: any) => {
         console.log("Creating subscription:", {
           userId,
           plan,
