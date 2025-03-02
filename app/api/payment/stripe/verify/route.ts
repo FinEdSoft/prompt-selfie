@@ -1,7 +1,7 @@
 import { createSubscriptionRecord } from "@/lib/payment";
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { PlanType } from "@prisma/client";
+import { PlanType } from "@/types";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
     apiVersion: "2025-02-24.acacia",
