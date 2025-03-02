@@ -34,7 +34,6 @@ export default function AboutPage() {
                     Transform your portraits with our cutting-edge AI technology. Be anyone, anywhere.
                 </p>
             </motion.section>
-
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
                 <motion.div 
                     initial="hidden"
