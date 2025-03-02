@@ -81,7 +81,8 @@ export async function POST(req: NextRequest) {
         });
     
         return NextResponse.json({
-            images: images.map((image) => image.id),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            images: images.map((image: any) => image.id),
         });
     } catch (error) {
         console.error(error);
