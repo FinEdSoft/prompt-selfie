@@ -61,7 +61,8 @@ export async function POST(req: NextRequest) {
         );
     
         const images = await prismaClient.outputImages.createManyAndReturn({
-            data: prompts.map((prompt, index) => ({
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            data: prompts.map((prompt: any, index: number) => ({
                 prompt: prompt.prompt,
                 userId: userId,
                 modelId: parsedBody.data.modelId,
