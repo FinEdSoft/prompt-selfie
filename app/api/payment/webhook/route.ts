@@ -1,5 +1,5 @@
 import { createSubscriptionRecord } from '@/lib/payment';
-import { PlanType } from '@prisma/client';
+import { PlanType } from '@/types';
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
