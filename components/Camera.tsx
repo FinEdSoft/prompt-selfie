@@ -37,6 +37,7 @@ export function Camera() {
 
   useEffect(() => {
     fetchImages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

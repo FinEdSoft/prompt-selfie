@@ -17,7 +17,7 @@ export default function TermsOfService() {
                     <p className="text-white">
                         These Terms of Service (&quot;Terms&quot;) govern your access to and use of our portrait AI generation 
                         services, including our website, mobile application, and all related services (collectively, 
-                        the "Service"). By using our Service, you agree to be bound by these Terms.
+                        the &quot;Service&quot;). By using our Service, you agree to be bound by these Terms.
                     </p>
                 </section>
 
