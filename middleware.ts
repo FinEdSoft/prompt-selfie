@@ -99,17 +99,17 @@ export const config = {
     "/api/pack/bulk",
     "/api/image/bulk",
     "/api/models",
-    "/api/fal-ai/webhook/train",
-    "/api/fal-ai/webhook/image",
+    // "/api/fal-ai/webhook/train",
+    // "/api/fal-ai/webhook/image",
     "/api/payment/create",
     "/api/payment/stripe/verify",
     "/api/payment/razorpay/verify",
     "/api/payment/subscription/[userId]",
     "/api/payment/credits/[userId]",
     "/api/payment/credits",
-    "/api/payment/webhook",
-    "/api/payment/verify",
-    "/api/webhook/clerk"
+    // "/api/payment/webhook",
+    // "/api/payment/verify",
+    // "/api/webhook/clerk"
 
   ],
 };
