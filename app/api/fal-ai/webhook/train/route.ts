@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        const result = await fal.queue.result("fal-ai/flux-lora", {
+        const result = await fal.queue.result("fal-ai/flux-pro/v1.1", {
             requestId,
         });
         
