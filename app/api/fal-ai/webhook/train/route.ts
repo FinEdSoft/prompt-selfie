@@ -11,18 +11,29 @@ export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
         const requestId = body.request_id as string;
-        
+
+        const model = await prismaClient.model.findFirst({
+            where: {
+              falAiRequestId: requestId,
+            },
+        });
+
+        if (!model) {
+            console.error("No model found for requestId:", requestId);
+            return NextResponse.json(
+                { message: "Model not found" },
+                { status: 404 }
+            );
+        }
+
         const result = await fal.queue.result("fal-ai/flux-lora", {
             requestId,
         });
-
-        const user  = await currentUser();
-        const userId = user?.id ?? "";
         
         // check if the user has enough credits
         const credits = await prismaClient.userCredit.findUnique({
             where: {
-                userId: userId,
+                userId: model.userId,
             },
         });
 
@@ -52,14 +63,14 @@ export async function POST(request: NextRequest) {
 
         await prismaClient.userCredit.update({
             where: {
-                userId: userId,
+                userId: model.userId,
             },
             data: {
                 amount: { decrement: TRAIN_MODEL_CREDITS },
             },
         });
 
-        return NextResponse.json({ message: "Webhook received" });
+        return NextResponse.json({ message: "Webhook processed successfully" });
     } catch (error) {
         console.error("Webhook processing error:", error);
         return NextResponse.json(
