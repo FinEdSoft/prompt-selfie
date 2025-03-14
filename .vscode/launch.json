@@ -1,0 +1,26 @@
+{
+	// Use IntelliSense to learn about possible attributes.
+	// Hover to view descriptions of existing attributes.
+	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Next.js: Server",
+			"type": "node-terminal",
+			"request": "launch",
+			"command": "npx next dev"
+		},
+		{
+			"name": "Next.js: Client",
+			"type": "chrome",
+			"request": "launch",
+			"url": "http://localhost:3000"
+		}
+	],
+	"compounds": [
+		{
+			"name": "Debug Next.js (Client + Server)",
+			"configurations": ["Next.js: Client", "Next.js: Server"]
+		}
+	]
+}

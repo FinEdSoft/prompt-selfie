@@ -92,6 +92,7 @@ export default clerkMiddleware();
 
 export const config = {
   matcher: [
+    "/dashboard",
     "/api/pre-signed-url",
     "/api/ai/training", 
     "/api/ai/generate",

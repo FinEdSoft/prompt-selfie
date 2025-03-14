@@ -13,9 +13,10 @@ export async function GET(request: Request) {
         const limit = searchParams.get("limit") || "100";
         const offset = searchParams.get("offset") || "0";
         
+        
         const imagesData = await prismaClient.outputImages.findMany({
             where: {
-                id: { in: ids },
+                // id: { in: ids },
                 userId,
                 status: {
                     not: "Failed",
