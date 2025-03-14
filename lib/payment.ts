@@ -3,6 +3,7 @@ import Razorpay from "razorpay";
 import crypto from "crypto";
 import { PlanType } from "@/types";
 import { prismaClient } from "./prisma";
+import axios from "axios";
 
 // Validate environment variables
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
@@ -29,21 +30,22 @@ const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_KEY_SECRET!,
 });
 
+
 // Define plan prices (in rupees)
 export const PLAN_PRICES = {
   basic: {
-    monthly: 4000, // ₹1
-    annual: 40000, // ₹10
+    monthly: 30, // in $
+    annual: 288, // $
   },
   premium: {
-    monthly: 8000, // ₹1,999
-    annual: 80000, // ₹19,990
+    monthly: 80, // $
+    annual: 768, // $
   },
 } as const;
 
 // Define credit amounts per plan
 export const CREDITS_PER_PLAN = {
-  basic: 500,
+  basic: 100,
   premium: 1000,
 } as const;
 
@@ -127,7 +129,8 @@ export async function createRazorpayOrder(
     const baseAmount = isAnnual
       ? PLAN_PRICES[plan].annual
       : PLAN_PRICES[plan].monthly;
-    const amountInPaise = baseAmount * 100;
+    const exchangeRate = await getExchangeRate();
+    const amountInPaise =  Math.round(baseAmount * exchangeRate * 100);
 
     console.log("Creating order with amount:", amountInPaise);
 
@@ -163,7 +166,7 @@ export async function createRazorpayOrder(
       key: process.env.RAZORPAY_KEY_ID,
       amount: amountInPaise,
       currency: "INR",
-      name: "PhotoAI",
+      name: "PromptSelfie",
       description: `${plan.toUpperCase()} Plan ${isAnnual ? "(Annual)" : "(Monthly)"}`,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       order_id: (order as any).id,
@@ -301,6 +304,19 @@ export async function createSubscriptionRecord(
   } catch (error) {
     console.error("Subscription creation error:", error);
     throw error;
+  }
+}
+
+async function getExchangeRate() {
+  try {
+    const currencyAPI="https://api.currencyfreaks.com/v2.0/rates/latest?apikey=" + process.env.CURRENCYAPI_KEY + "&base_currency=USD";
+    const response = await axios.get(currencyAPI);
+    const exchangeRate = response.data.rates.INR;
+    return exchangeRate
+
+  } catch (error) {
+    console.error("Exchange rate fetch failed:", error);
+    return 86.95; // Fallback value
   }
 }
 
