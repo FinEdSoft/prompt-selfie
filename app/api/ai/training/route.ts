@@ -25,13 +25,13 @@ export async function POST(req: NextRequest) {
     // Train the model using falAi service
     const { request_id } = await falAiModel.trainModel(
         parsedBody.data.zipUrl,
-        parsedBody.data.name
+        parsedBody.data.name.replaceAll(" ", "_")
     );
     
     // Create model in database
     const data = await prismaClient.model.create({
         data: {
-            name: parsedBody.data.name,
+            name: parsedBody.data.name.replaceAll(" ", "_"),
             type: parsedBody.data.type,
             age: parsedBody.data.age,
             ethinicity: parsedBody.data.ethinicity,

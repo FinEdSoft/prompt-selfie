@@ -12,8 +12,6 @@ export async function POST(request: NextRequest) {
         const body = await request.json();
         const requestId = body.request_id as string;
 
-        const token = request.headers.get("Authorization");
-
         const model = await prismaClient.model.findFirst({
             where: {
                 falAiRequestId: requestId,
