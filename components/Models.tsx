@@ -43,10 +43,11 @@ export function SelectModel({
         },
       });
       setModels(response.data.models);
-      setSelectedModel(response.data.models[0]?.id);
-      if(isGallary) {
-        setSelectedModelName(response.data.models[0]?.name);
+      
+      if(!isGallary) {
+        setSelectedModel(response.data.models[0]?.id);
       }
+      
       setModalLoading(false);
     })();
   }, []);

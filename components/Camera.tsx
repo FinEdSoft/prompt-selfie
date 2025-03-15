@@ -29,8 +29,11 @@ export function Camera() {
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const [isDownloading, setIsDownloading] = useState(false);
   const [openModelSelectionDialog, setOpenModelSelectionDialog] = useState(false);
-  const [selectedModel, setSelectedModel] = useState<string>();
+  const [selectedModel, setSelectedModel] = useState<string | undefined>();
   const [selectedModelName, setSelectedModelName] = useState<string>();
+  const [page, setPage] = useState(1);
+  const [totalImages, setTotalImages] = useState(0);
+
   const { getToken } = useAuth();
 
   const formatDate = (dateString: string) => {
@@ -43,13 +46,33 @@ export function Camera() {
     });
   };
 
-  const fetchImages = async () => {
+  const fetchImages = async (isReset: boolean = false) => {
     try {
-      const token = await getToken(); 
-      const response = await axios.get(`${BACKEND_URL}/image/bulk`, {
+      setImagesLoading(true);
+
+      if(isReset) {
+        setOpenModelSelectionDialog(false);
+        setPage(1);
+        setImages([]);
+      }
+
+      const token = await getToken();
+      let limit = 50;
+      let skip = (page - 1) * limit;
+      
+      let url = `${BACKEND_URL}/image/bulk?limit=${limit}&offset=${skip}`;
+
+      if (selectedModel !== undefined) {
+        url += `&modelId=${selectedModel}`;
+      }
+
+
+
+      const response = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setImages(response.data.images);
+      setImages((prev) => [...prev, ...response.data.images]);
+      setTotalImages(response.data.count);
       setImagesLoading(false);
     } catch (error) {
       console.error("Failed to fetch images:", error);
@@ -57,10 +80,18 @@ export function Camera() {
     }
   };
 
+  // Effect for when selectedModel changes
   useEffect(() => {
-    setOpenModelSelectionDialog(false);
-    fetchImages();
+    fetchImages(true);
   }, [selectedModel]);
+
+  // Effect for when page changes
+  useEffect(() => {
+    // Don't skip page 1 for normal page changes
+    // Only skip the initial render (when both selectedModel and page are at initial state)
+    if (page === 1 && !selectedModel && images.length === 0) return;
+    fetchImages();
+  }, [page]);
 
   const handleImageClick = (image: TImage, index: number) => {
     setSelectedImage(image);
@@ -101,49 +132,68 @@ export function Camera() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        
-          <h2 className="text-2xl font-semibold tracking-tight">
-            {selectedModelName ? `Model: ${selectedModelName}` : "All Images"}
-          </h2>
-          
+
+        <h2 className="text-2xl font-semibold tracking-tight">
+          {selectedModelName ? `Model: ${selectedModelName}` : "All Images"}
+        </h2>
+
         <div className="flex items-center space-x-4">
-        <span className="text-sm text-muted-foreground">
-          {images.length} images
-        </span>
-        <Button variant="default" onClick={() => setOpenModelSelectionDialog(true)}>
+          <span className="text-sm text-muted-foreground">
+            {images.length} of {totalImages} images
+          </span>
+          <Button variant="default" onClick={() => setOpenModelSelectionDialog(true)}>
             Select Model
           </Button>
+          {selectedModel && (
+            <Button variant="default" onClick={() => setSelectedModel(undefined)}>
+              Show All Images
+            </Button>)
+          }
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {images.map((image, index) => (
+          <div
+            key={image.id}
+            onClick={() => handleImageClick(image, index)}
+          >
+            <ImageCard
+              id={image.id}
+              status={image.status}
+              imageUrl={image.imageUrl}
+              // @ts-expect-error
+              onClick={() => handleImageClick(image, index)}
+              modelId={image.modelId}
+              userId={image.userId}
+              prompt={image.prompt}
+              falAiRequestId={image.falAiRequestId}
+              createdAt={image.createdAt}
+              updatedAt={image.updatedAt}
+            />
+          </div>
+        ))}
         {imagesLoading
-          ? [...Array(8)].map((_, i) => (
-              <div
-                key={i}
-                className="bg-gray-300 h-48 rounded-lg animate-pulse"
-              />
-            ))
-          : images.map((image, index) => (
-              <div
-                key={image.id}
-                onClick={() => handleImageClick(image, index)}
-              >
-                <ImageCard
-                  id={image.id}
-                  status={image.status}
-                  imageUrl={image.imageUrl}
-                  // @ts-expect-error
-                  onClick={() => handleImageClick(image, index)}
-                  modelId={image.modelId}
-                  userId={image.userId}
-                  prompt={image.prompt}
-                  falAiRequestId={image.falAiRequestId}
-                  createdAt={image.createdAt}
-                  updatedAt={image.updatedAt}
-                />
-              </div>
-            ))}
+          ? [...Array(4)].map((_, i) => (
+            <div
+              key={i}
+              className="bg-gray-300 h-48 rounded-lg animate-pulse"
+            />
+          ))
+          : null}
+      </div>
+
+      <div className="flex justify-center ">
+        {images.length !== totalImages ?
+          <Button
+            variant="default"
+            onClick={() => setPage((prev) => prev + 1)}
+            disabled={imagesLoading}
+            className={imagesLoading ? "cursor-not-allowed" : "cursor-pointer"}
+          >
+            {imagesLoading ? "Loading..." : "Load More"}
+          </Button>
+          : null}
       </div>
 
       {!imagesLoading && images.length === 0 && (
