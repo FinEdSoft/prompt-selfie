@@ -25,28 +25,25 @@ export function PlanCard({ plan, onSelect }: PlanCardProps) {
   return (
     <Card className="p-8 rounded-2xl shadow-xl transition-all duration-300 ease-out hover:shadow-md hover:shadow-purple-600/50 border border-gray-200 dark:border-gray-700 transform hover:scale-102 hover:brightness-110">
       {/* Plan Name */}
+      <div>
       <h2 className="text-3xl font-extrabold mb-4 text-gray-900 dark:text-white">
         {plan.name}
       </h2>
+      <p className="text-sm text-gray-500 dark:text-gray-400">
+            One-time payment for {plan.credits} credits
+          </p>
+      </div>
 
       {/* Pricing & Toggle */}
-      <div className="flex items-center justify-between mb-6">
-        <span className="text-4xl font-bold text-gray-900 dark:text-white">
-          ${isAnnual ? annualPrice : plan.price}
-        </span>
-        <div className="flex items-center gap-2 px-3 py-1 ">
-          <span className="text-gray-600 dark:text-gray-400 text-sm">
-            Monthly
+      <div className="flex items-baseline gap-1 mt-4">
+          <span className="text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 dark:from-cyan-400 dark:to-blue-400 bg-clip-text text-transparent">
+            ${plan.price}
           </span>
-          <Switch checked={isAnnual} onCheckedChange={setIsAnnual} />
-          <span className="text-gray-900 dark:text-white font-medium text-sm">
-            Annual
-          </span>
-        </div>
+          <span className="text-gray-500 dark:text-gray-400">one-time</span>
       </div>
 
       {/* Features List */}
-      <ul className="mb-6 space-y-2">
+      <ul className="my-6 space-y-2">
         {plan.features.map((feature) => (
           <li
             key={feature}

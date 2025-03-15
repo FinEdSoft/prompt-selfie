@@ -45,8 +45,8 @@ export const PLAN_PRICES = {
 
 // Define credit amounts per plan
 export const CREDITS_PER_PLAN = {
-  basic: 100,
-  premium: 1000,
+  basic: 200,
+  premium: 500,
 } as const;
 
 export async function createStripeSession(

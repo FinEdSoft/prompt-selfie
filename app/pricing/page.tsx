@@ -19,9 +19,9 @@ export default function SubscriptionPage() {
       type: PlanType.basic,
       name: "Basic Plan",
       price: 30, // $50
-      credits: 500,
+      credits: 200,
       features: [
-        "500 Credits",
+        "200 Credits",
         "Basic Support",
         "Standard Processing",
         "Flux Lora",
@@ -32,9 +32,9 @@ export default function SubscriptionPage() {
       type: PlanType.premium,
       name: "Premium Plan",
       price: 80, // $100
-      credits: 1000,
+      credits: 500,
       features: [
-        "1000 Credits",
+        "500 Credits",
         "Priority Support",
         "Fast Processing",
         "Advanced Features",
