@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
 
         packPrompts.forEach(async (packPrompt) => {
             [1, 2, 3, 4].forEach(async () => {
-                const prompt = packPrompt.prompt.replaceAll("model", model.name);
+                const prompt = packPrompt.prompt.replaceAll("model", model.name).replaceAll("Model", model.name);
 
                 const { request_id } = await new FalAIModel().generateImage(
                     prompt,
