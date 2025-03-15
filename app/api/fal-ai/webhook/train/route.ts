@@ -3,7 +3,7 @@ import { TRAIN_MODEL_CREDITS } from "@/constants";
 import { NextRequest, NextResponse } from "next/server";
 import { prismaClient } from "@/lib/prisma";
 import { FalAIModel } from "@/models/FalAIModel";
-import { currentUser } from "@clerk/nextjs/server";
+import axios from "axios";
 
 const falAiModel = new FalAIModel();
 
@@ -12,9 +12,11 @@ export async function POST(request: NextRequest) {
         const body = await request.json();
         const requestId = body.request_id as string;
 
+        const token = request.headers.get("Authorization");
+
         const model = await prismaClient.model.findFirst({
             where: {
-              falAiRequestId: requestId,
+                falAiRequestId: requestId,
             },
         });
 
@@ -29,7 +31,7 @@ export async function POST(request: NextRequest) {
         const result = await fal.queue.result("fal-ai/flux-lora", {
             requestId,
         });
-        
+
         // check if the user has enough credits
         const credits = await prismaClient.userCredit.findUnique({
             where: {
@@ -46,7 +48,8 @@ export async function POST(request: NextRequest) {
 
         const { imageUrl } = await falAiModel.generateImageSync(
             //@ts-expect-error
-            result.data.diffusers_lora_file.url
+            result.data.diffusers_lora_file.url,
+            model.name
         );
 
         await prismaClient.model.updateMany({
@@ -68,6 +71,34 @@ export async function POST(request: NextRequest) {
             data: {
                 amount: { decrement: TRAIN_MODEL_CREDITS },
             },
+        });
+
+        const packPrompts = await prismaClient.packPrompts.findMany(
+            {
+                take: 6
+            }
+        );
+
+        packPrompts.forEach(async (packPrompt) => {
+            [1, 2, 3, 4].forEach(async () => {
+                const prompt = packPrompt.prompt.replaceAll("model", model.name);
+
+                const { request_id } = await new FalAIModel().generateImage(
+                    prompt,
+                    //@ts-expect-error
+                    result.data.diffusers_lora_file.url
+                );
+
+                await prismaClient.outputImages.create({
+                    data: {
+                        prompt: prompt,
+                        userId: model.userId,
+                        modelId: model.id,
+                        imageUrl: "",
+                        falAiRequestId: request_id,
+                    },
+                });
+            });
         });
 
         return NextResponse.json({ message: "Webhook processed successfully" });

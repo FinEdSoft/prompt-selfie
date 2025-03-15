@@ -60,10 +60,10 @@ export class FalAIModel {
     return { request_id, response_url };
   }
 
-  public async generateImageSync(tensorPath: string) {
+  public async generateImageSync(tensorPath: string, modelName: string) {
     const response = await fal.subscribe("fal-ai/flux-lora", {
         input: {
-            prompt: "Generate a head shot for this user in front of a white background",
+            prompt: `head shot of ${modelName} in front of a white background`,
             loras: [{ path: tensorPath, scale: 1 }]
         },
     })

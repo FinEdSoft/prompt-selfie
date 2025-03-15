@@ -5,11 +5,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { ImageCard } from "./ImageCard";
 import { motion } from "framer-motion";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger, } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
 import { Download, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
-
+import { SelectModel } from "./Models";
 export interface TImage {
   id: string;
   imageUrl: string;
@@ -28,6 +28,9 @@ export function Camera() {
   const [selectedImage, setSelectedImage] = useState<TImage | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [openModelSelectionDialog, setOpenModelSelectionDialog] = useState(false);
+  const [selectedModel, setSelectedModel] = useState<string>();
+  const [selectedModelName, setSelectedModelName] = useState<string>();
   const { getToken } = useAuth();
 
   const formatDate = (dateString: string) => {
@@ -42,7 +45,7 @@ export function Camera() {
 
   const fetchImages = async () => {
     try {
-      const token = await getToken();
+      const token = await getToken(); 
       const response = await axios.get(`${BACKEND_URL}/image/bulk`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -55,8 +58,9 @@ export function Camera() {
   };
 
   useEffect(() => {
+    setOpenModelSelectionDialog(false);
     fetchImages();
-  }, []);
+  }, [selectedModel]);
 
   const handleImageClick = (image: TImage, index: number) => {
     setSelectedImage(image);
@@ -97,10 +101,19 @@ export function Camera() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-semibold tracking-tight">Your Gallery</h2>
+        
+          <h2 className="text-2xl font-semibold tracking-tight">
+            {selectedModelName ? `Model: ${selectedModelName}` : "All Images"}
+          </h2>
+          
+        <div className="flex items-center space-x-4">
         <span className="text-sm text-muted-foreground">
           {images.length} images
         </span>
+        <Button variant="default" onClick={() => setOpenModelSelectionDialog(true)}>
+            Select Model
+          </Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -145,12 +158,29 @@ export function Camera() {
         </motion.div>
       )}
 
+      {openModelSelectionDialog && (
+        <Dialog
+          open={!!openModelSelectionDialog}
+          onOpenChange={(open) => !open && setOpenModelSelectionDialog(false)}
+        >
+          <DialogContent className="max-w-2xl p-10 overflow-hidden bg-black/90 backdrop-blur-xl">
+            <DialogTitle className="sr-only">Image Preview</DialogTitle>
+            <SelectModel
+              selectedModel={selectedModel}
+              setSelectedModel={setSelectedModel}
+              isGallary={true}
+              setSelectedModelName={setSelectedModelName}
+            />
+          </DialogContent>
+        </Dialog>
+      )}
+
       {selectedImage && (
         <Dialog
           open={!!selectedImage}
           onOpenChange={(open) => !open && setSelectedImage(null)}
         >
-          <DialogContent className="max-w-5xl p-10 overflow-hidden bg-black/90 backdrop-blur-xl">
+          <DialogContent className="max-w-2xl p-10 overflow-hidden bg-black/90 backdrop-blur-xl">
             <DialogTitle className="sr-only">Image Preview</DialogTitle>
             <motion.div
               initial={{ opacity: 0 }}

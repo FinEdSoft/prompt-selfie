@@ -61,7 +61,7 @@ export function Train() {
       ethinicity,
       eyeColor,
       bald,
-      name,
+      name: name + "_" + Date.now(),
     };
 
     try {

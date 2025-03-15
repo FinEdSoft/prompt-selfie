@@ -11,6 +11,8 @@ export async function POST(req: Request) {
         const user  = await currentUser();
         const userId = user?.id ?? "";
 
+        
+
         // Parse the request body
         const body = await req.json();
         const parsedBody = GenerateImage.safeParse(body);
@@ -45,7 +47,7 @@ export async function POST(req: Request) {
         }
 
         const { request_id } = await new FalAIModel().generateImage(
-            parsedBody.data.prompt,
+            parsedBody.data.prompt.replaceAll("model", model.name),
             model.tensorPath
         );
 

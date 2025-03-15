@@ -186,6 +186,7 @@ export function UploadModal({
                 </Button>
               </div>
               <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                Please select 10 to 20 images of yourself for best results <br />
                 Supported formats: PNG, JPG, GIF
               </p>
             </div>

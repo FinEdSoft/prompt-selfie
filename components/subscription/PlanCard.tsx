@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
+import { SignInButton } from "@clerk/nextjs";
+import { useAuth } from "@/hooks/useAuth";
 import { CheckIcon } from "lucide-react";
 import { useState } from "react";
 
@@ -18,6 +20,7 @@ interface PlanCardProps {
 export function PlanCard({ plan, onSelect }: PlanCardProps) {
   const [isAnnual, setIsAnnual] = useState(false);
   const annualPrice = Math.round(plan.price * 12 * 0.8); // 20% discount
+  const { isAuthenticated } = useAuth();
 
   return (
     <Card className="p-8 rounded-2xl shadow-xl transition-all duration-300 ease-out hover:shadow-md hover:shadow-purple-600/50 border border-gray-200 dark:border-gray-700 transform hover:scale-102 hover:brightness-110">
@@ -56,12 +59,23 @@ export function PlanCard({ plan, onSelect }: PlanCardProps) {
       </ul>
 
       {/* Select Plan Button */}
+
+      {isAuthenticated ? (
       <Button
         className="w-full py-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 text-white font-medium tracking-wide shadow-lg transition-all hover:scale-105 hover:shadow-xl dark:from-blue-500 dark:to-blue-400"
         onClick={() => onSelect(isAnnual)}
       >
         Select Plan
       </Button>
+      ) : (
+        <SignInButton mode="modal">
+            <Button
+              className="w-full py-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 text-white font-medium tracking-wide shadow-lg transition-all hover:scale-105 hover:shadow-xl dark:from-blue-500 dark:to-blue-400"
+            >
+              Sign in to Purchase
+            </Button>
+          </SignInButton>
+      )}
     </Card>
   );
 }

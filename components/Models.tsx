@@ -20,9 +20,15 @@ interface TModel {
 export function SelectModel({
   setSelectedModel,
   selectedModel,
+  isGallary = false,
+  setSelectedModelName = () => {},
+
 }: {
   setSelectedModel: (model: string) => void;
   selectedModel?: string;
+  isGallary?: boolean;
+  setSelectedModelName?: (modelName: string) => void;
+
 }) {
   const { getToken } = useAuth();
   const [modelLoading, setModalLoading] = useState(true);
@@ -38,6 +44,9 @@ export function SelectModel({
       });
       setModels(response.data.models);
       setSelectedModel(response.data.models[0]?.id);
+      if(isGallary) {
+        setSelectedModelName(response.data.models[0]?.name);
+      }
       setModalLoading(false);
     })();
   }, []);
@@ -61,12 +70,23 @@ export function SelectModel({
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="space-y-1">
-          <h2 className="text-2xl font-semibold tracking-tight">
-            Step 1 -Select Model
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            Choose an AI model to generate your images
-          </p>
+          {
+            isGallary ? (
+              <h2 className="text-2xl font-semibold tracking-tight">
+                Select a Model
+              </h2>
+            ) : (
+              <>
+                <h2 className="text-2xl font-semibold tracking-tight">
+                  Step 1 - Select Model
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  Choose an AI model to generate your images
+                </p>
+              </>
+            )
+          }
+          
         </div>
         {models.find((x) => x.trainingStatus !== "Generated") && (
           <Badge variant="secondary" className="animate-pulse">
@@ -98,7 +118,7 @@ export function SelectModel({
                     "group relative overflow-hidden transition-all duration-300 hover:shadow-xl cursor-pointer",
                     selectedModel === model.id && "ring-2 ring-primary"
                   )}
-                  onClick={() => setSelectedModel(model.id)}
+                  onClick={() => { setSelectedModel(model.id); setSelectedModelName(model.name); } }
                 >
                   <div className="relative aspect-square">
                     <Image
