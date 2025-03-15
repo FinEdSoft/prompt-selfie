@@ -4,7 +4,7 @@ import { Switch } from "@/components/ui/switch";
 import { SignInButton } from "@clerk/nextjs";
 import { useAuth } from "@/hooks/useAuth";
 import { CheckIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface PlanCardProps {
   plan: {
@@ -14,13 +14,25 @@ interface PlanCardProps {
     credits: number;
     features: string[];
   };
-  onSelect: (isAnnual: boolean) => void;
+  onSelect: () => void;
 }
 
 export function PlanCard({ plan, onSelect }: PlanCardProps) {
   const [isAnnual, setIsAnnual] = useState(false);
   const annualPrice = Math.round(plan.price * 12 * 0.8); // 20% discount
   const { isAuthenticated } = useAuth();
+  const isPremium = plan.type === "premium";
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleClick = async () => {
+    setIsLoading(true);
+    try {
+      await onSelect();
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
 
   return (
     <Card className="p-8 rounded-2xl shadow-xl transition-all duration-300 ease-out hover:shadow-md hover:shadow-purple-600/50 border border-gray-200 dark:border-gray-700 transform hover:scale-102 hover:brightness-110">
@@ -59,15 +71,33 @@ export function PlanCard({ plan, onSelect }: PlanCardProps) {
 
       {isAuthenticated ? (
       <Button
-        className="w-full py-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 text-white font-medium tracking-wide shadow-lg transition-all hover:scale-105 hover:shadow-xl dark:from-blue-500 dark:to-blue-400"
-        onClick={() => onSelect(isAnnual)}
-      >
-        Select Plan
-      </Button>
+      className={`w-full py-6 rounded-xl font-medium tracking-wide shadow-lg transition-all duration-300 cursor-pointer
+        ${
+          isPremium
+            ? "bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white hover:scale-[1.02] hover:shadow-xl"
+            : "bg-gray-900 hover:bg-gray-800 text-white dark:bg-gray-800 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-xl"
+        }`}
+      onClick={handleClick}
+      disabled={isLoading}
+    >
+      {isLoading ? (
+        <div className="flex items-center gap-2">
+          <div className="w-5 h-5 border-t-2 border-b-2 border-current rounded-full animate-spin" />
+          Processing...
+        </div>
+      ) : (
+        `Get ${plan.credits} Credits`
+      )}
+    </Button>
       ) : (
         <SignInButton mode="modal">
             <Button
-              className="w-full py-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 text-white font-medium tracking-wide shadow-lg transition-all hover:scale-105 hover:shadow-xl dark:from-blue-500 dark:to-blue-400"
+              className={`w-full py-6 rounded-xl font-medium tracking-wide shadow-lg transition-all duration-300 cursor-pointer
+                ${
+                  isPremium
+                    ? "bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white hover:scale-[1.02] hover:shadow-xl"
+                    : "bg-gray-900 hover:bg-gray-800 text-white dark:bg-gray-800 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-xl"
+                }`}
             >
               Sign in to Purchase
             </Button>
