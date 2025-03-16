@@ -12,9 +12,9 @@ const DEFAULT_BLUR_IMAGE =
 export function ImageCard(props: TImage) {
   return (
     <div className="border rounded-xl max-w-[400px] cursor-pointer">
-      <div className="flex p-4 gap-4 min-h-40">
+      <div className="flex p-4 gap-4 h-70 justify-center">
         {props.status === "Generated" ? (
-          <img src={props.imageUrl} className="rounded" />
+          <img src={props.imageUrl} className="rounded object-contain" />
         ) : (
           <img src={DEFAULT_BLUR_IMAGE} />
         )}

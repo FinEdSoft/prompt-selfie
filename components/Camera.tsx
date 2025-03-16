@@ -136,7 +136,7 @@ export function Camera() {
         <h2 className="text-2xl font-semibold tracking-tight">
           {selectedModelName ? `Model: ${selectedModelName}` : "All Images"}
         </h2>
-
+        
         <div className="flex items-center space-x-4">
           <span className="text-sm text-muted-foreground">
             {images.length} of {totalImages} images
@@ -151,7 +151,9 @@ export function Camera() {
           }
         </div>
       </div>
-
+      {images.length > 0 && (<p className="text-muted-foreground"
+      >Click or tap an image to view and download.</p>)}
+      
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {images.map((image, index) => (
           <div
