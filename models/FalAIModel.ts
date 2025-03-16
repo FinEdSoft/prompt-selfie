@@ -1,5 +1,6 @@
 import { fal } from "@fal-ai/client";
 import { BaseModel } from "./BaseModel";
+import { ImageSize } from "@fal-ai/client/endpoints";
 const axios = require('axios');
 
 export class FalAIModel {
@@ -7,11 +8,12 @@ export class FalAIModel {
 
   }
 
-  public async generateImage(prompt: string, tensorPath: string) {
+  public async generateImage(prompt: string, tensorPath: string, imageSize: ImageSize | "square_hd" | "square" | "portrait_4_3" | "portrait_16_9" | "landscape_4_3" | "landscape_16_9" | undefined = "landscape_4_3") {
     const { request_id, response_url } = await fal.queue.submit("fal-ai/flux-lora", {
         input: {
             prompt: prompt,
-            loras: [{ path: tensorPath, scale: 1 }]
+            loras: [{ path: tensorPath, scale: 1 }],
+            image_size: imageSize
         },
         webhookUrl: `${process.env.WEBHOOK_BASE_URL}/fal-ai/webhook/image`,
     });
@@ -60,11 +62,12 @@ export class FalAIModel {
     return { request_id, response_url };
   }
 
-  public async generateImageSync(tensorPath: string, modelName: string) {
+  public async generateImageSync(tensorPath: string, modelName: string, imageSize: ImageSize | "square_hd" | "square" | "portrait_4_3" | "portrait_16_9" | "landscape_4_3" | "landscape_16_9" | undefined = "square_hd") {
     const response = await fal.subscribe("fal-ai/flux-lora", {
         input: {
             prompt: `head shot of ${modelName} in front of a white background`,
-            loras: [{ path: tensorPath, scale: 1 }]
+            loras: [{ path: tensorPath, scale: 1 }],
+            image_size: imageSize
         },
     })
     return {

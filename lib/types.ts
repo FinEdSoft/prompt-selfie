@@ -22,10 +22,26 @@ export const TrainModel = z.object({
 export const GenerateImage = z.object({
     prompt: z.string(),
     modelId: z.string(),
-    num: z.number()
+    num: z.number(),
+    imageSize: z.enum([
+        "landscape_4_3",
+        "landscape_16_9",
+        "portrait_16_9",
+        "portrait_4_3",
+        "square",
+        "square_hd",
+    ])
 })
 
 export const GenerateImagesFromPack = z.object({
     modelId: z.string(),
-    packId: z.string()
+    packId: z.string(),
+    imageSize: z.enum([
+        "landscape_4_3",
+        "landscape_16_9",
+        "portrait_16_9",
+        "portrait_4_3",
+        "square",
+        "square_hd",
+    ])
 })

@@ -15,6 +15,14 @@ import {
 } from "./ui/tooltip";
 import { useCredits } from "@/hooks/use-credits";
 import { useRouter } from "next/navigation";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useState } from "react";
 
 export interface TPack {
   id: string;
@@ -28,6 +36,7 @@ export interface TPack {
 }
 
 export function PackCard(props: TPack & { selectedModelId: string }) {
+  const [imageSize, setImageSize] = useState("landscape_4_3");
   const { getToken } = useAuth();
   const { credits } = useCredits();
   const router = useRouter();
@@ -58,6 +67,7 @@ export function PackCard(props: TPack & { selectedModelId: string }) {
       {
         packId: props.id,
         modelId: props.selectedModelId,
+        imageSize
       },
       {
         headers: {
@@ -125,6 +135,21 @@ export function PackCard(props: TPack & { selectedModelId: string }) {
               </CardContent>
 
               <CardFooter className="p-4 pt-0">
+                <div className="mr-1">
+              <Select value={imageSize} onValueChange={setImageSize}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="landscape_4_3">Landscape 4:3 (1024x768)</SelectItem>
+                  <SelectItem value="landscape_16_9">Landscape 16:9 (1024x576)</SelectItem>
+                  <SelectItem value="portrait_4_3">Portrait 3:4 (768x1024)</SelectItem>
+                  <SelectItem value="portrait_16_9">Portrait 9:16 (576x1024)</SelectItem>
+                  <SelectItem value="square_hd">Square HD (1024x1024)</SelectItem>
+                  <SelectItem value="square">Square (512x512)</SelectItem>
+                </SelectContent>
+              </Select>
+              </div>
                 <Button 
                   className="w-full gap-2 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 cursor-pointer"
                   onClick={handleGenerate}

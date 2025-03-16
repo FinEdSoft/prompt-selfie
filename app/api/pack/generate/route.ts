@@ -56,7 +56,11 @@ export async function POST(req: NextRequest) {
         const requestIds: { request_id: string }[] = await Promise.all(
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             prompts.map((prompt: any) =>
-                falAiModel.generateImage(prompt.prompt, model.tensorPath!)
+                falAiModel.generateImage(
+                    prompt.prompt.replaceAll("model", model.name).replaceAll("Model", model.name), 
+                    model.tensorPath!, 
+                    parsedBody.data.imageSize
+                )
             )
         );
     

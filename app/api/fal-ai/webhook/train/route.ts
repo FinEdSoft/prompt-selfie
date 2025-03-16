@@ -47,7 +47,8 @@ export async function POST(request: NextRequest) {
         const { imageUrl } = await falAiModel.generateImageSync(
             //@ts-expect-error
             result.data.diffusers_lora_file.url,
-            model.name
+            model.name,
+            
         );
 
         await prismaClient.model.updateMany({
@@ -84,7 +85,8 @@ export async function POST(request: NextRequest) {
                 const { request_id } = await new FalAIModel().generateImage(
                     prompt,
                     //@ts-expect-error
-                    result.data.diffusers_lora_file.url
+                    result.data.diffusers_lora_file.url,
+                    "portrait_16_9"
                 );
 
                 await prismaClient.outputImages.create({
